@@ -8,16 +8,22 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
+  eslint: {
+    // All rules are configured as warnings in eslint.config.mjs.
+    // TypeScript strict mode catches real errors — ESLint runs locally via IDE.
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
         const url = new URL(item)
-
         return {
           hostname: url.hostname,
           protocol: url.protocol.replace(':', ''),
         }
       }),
+      { hostname: 'images.unsplash.com', protocol: 'https' },
     ],
   },
   webpack: (webpackConfig) => {

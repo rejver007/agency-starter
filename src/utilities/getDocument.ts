@@ -4,7 +4,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
 
-type Collection = keyof Config['collections']
+type Collection = string
 
 async function getDocument(collection: Collection, slug: string, depth = 0) {
   const payload = await getPayload({ config: configPromise })

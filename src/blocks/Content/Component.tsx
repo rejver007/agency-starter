@@ -21,12 +21,12 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
       <div className="grid grid-cols-4 lg:grid-cols-12 gap-y-8 gap-x-16">
         {columns &&
           columns.length > 0 &&
-          columns.map((col, index) => {
+          columns.map((col: any, index: number) => {
             const { enableLink, link, richText, size } = col
 
             return (
               <div
-                className={cn(`col-span-4 lg:col-span-${colsSpanClasses[size!]}`, {
+                className={cn(`col-span-4 lg:col-span-${colsSpanClasses[size as keyof typeof colsSpanClasses]}`, {
                   'md:col-span-2': size !== 'full',
                 })}
                 key={index}

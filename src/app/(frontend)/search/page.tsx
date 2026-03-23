@@ -19,47 +19,35 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
   const { q: query } = await searchParamsPromise
   const payload = await getPayload({ config: configPromise })
 
-  const posts = await payload.find({
-    collection: 'search',
-    depth: 1,
-    limit: 12,
-    select: {
-      title: true,
-      slug: true,
-      categories: true,
-      meta: true,
-    },
-    // pagination: false reduces overhead if you don't need totalDocs
-    pagination: false,
-    ...(query
-      ? {
-          where: {
-            or: [
-              {
-                title: {
-                  like: query,
-                },
-              },
-              {
-                'meta.description': {
-                  like: query,
-                },
-              },
-              {
-                'meta.title': {
-                  like: query,
-                },
-              },
-              {
-                slug: {
-                  like: query,
-                },
-              },
-            ],
-          },
-        }
-      : {}),
-  })
+  let posts: { docs: CardPostData[]; totalDocs: number } = { docs: [], totalDocs: 0 }
+  try {
+    posts = await payload.find({
+      collection: 'search' as any,
+      depth: 1,
+      limit: 12,
+      select: {
+        title: true,
+        slug: true,
+        categories: true,
+        meta: true,
+      },
+      pagination: false,
+      ...(query
+        ? {
+            where: {
+              or: [
+                { title: { like: query } },
+                { 'meta.description': { like: query } },
+                { 'meta.title': { like: query } },
+                { slug: { like: query } },
+              ],
+            },
+          }
+        : {}),
+    }) as any
+  } catch {
+    // search collection not available
+  }
 
   return (
     <div className="pt-24 pb-24">

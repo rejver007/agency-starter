@@ -82,6 +82,36 @@ export const Posts: CollectionConfig<'posts'> = {
               relationTo: 'media',
             },
             {
+              name: 'excerpt',
+              type: 'textarea',
+              label: 'Excerpt',
+              admin: {
+                description: 'Short teaser shown in news cards and the archive page. Falls back to meta description if empty.',
+                rows: 3,
+              },
+            },
+            {
+              name: 'gallery',
+              type: 'array',
+              label: 'Photo Gallery',
+              admin: {
+                description: 'Additional images displayed at the bottom of the article.',
+              },
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                },
+                {
+                  name: 'caption',
+                  type: 'text',
+                  label: 'Caption',
+                },
+              ],
+            },
+            {
               name: 'content',
               type: 'richText',
               editor: lexicalEditor({
@@ -128,6 +158,23 @@ export const Posts: CollectionConfig<'posts'> = {
               },
               hasMany: true,
               relationTo: 'categories',
+            },
+            {
+              name: 'tags',
+              type: 'array',
+              label: 'Tags',
+              admin: {
+                position: 'sidebar',
+                description: 'Keywords like "Recipe", "Events", "Culture"',
+              },
+              fields: [
+                {
+                  name: 'tag',
+                  type: 'text',
+                  required: true,
+                  label: 'Tag',
+                },
+              ],
             },
           ],
           label: 'Meta',

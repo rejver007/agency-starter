@@ -86,7 +86,20 @@
   }
 }
 
+/* ── Pikku Quattro design tokens ─────────────────────────────────── */
 :root {
+  --pq-bg:        #0D0704;
+  --pq-surface:   #1C0F08;
+  --pq-surface2:  #2A1A0E;
+  --pq-red:       #DC2626;
+  --pq-red-dark:  #B91C1C;
+  --pq-gold:      #CA8A04;
+  --pq-gold-light:#F59E0B;
+  --pq-text:      #F5F0E8;
+  --pq-muted:     #A89880;
+  --pq-border:    #2A1A0E;
+
+  /* Payload admin vars — keep neutral */
   --background: oklch(100% 0 0deg);
   --foreground: oklch(14.5% 0 0deg);
   --card: oklch(96.5% 0.005 265deg);
@@ -106,11 +119,6 @@
   --border: oklch(92.2% 0 0deg);
   --input: oklch(92.2% 0 0deg);
   --ring: oklch(70.8% 0 0deg);
-  --chart-1: oklch(64.6% 0.222 41.116deg);
-  --chart-2: oklch(60% 0.118 184.704deg);
-  --chart-3: oklch(39.8% 0.07 227.392deg);
-  --chart-4: oklch(82.8% 0.189 84.429deg);
-  --chart-5: oklch(76.9% 0.188 70.08deg);
   --radius: 0.625rem;
   --sidebar: oklch(98.5% 0 0deg);
   --sidebar-foreground: oklch(14.5% 0 0deg);
@@ -145,11 +153,6 @@
   --border: oklch(26.9% 0 0deg);
   --input: oklch(26.9% 0 0deg);
   --ring: oklch(43.9% 0 0deg);
-  --chart-1: oklch(48.8% 0.243 264.376deg);
-  --chart-2: oklch(69.6% 0.17 162.48deg);
-  --chart-3: oklch(76.9% 0.188 70.08deg);
-  --chart-4: oklch(62.7% 0.265 303.9deg);
-  --chart-5: oklch(64.5% 0.246 16.439deg);
   --sidebar: oklch(20.5% 0 0deg);
   --sidebar-foreground: oklch(98.5% 0 0deg);
   --sidebar-primary: oklch(48.8% 0.243 264.376deg);
@@ -161,6 +164,61 @@
   --success: oklch(28% 0.1 200deg);
   --warning: oklch(35% 0.08 70deg);
   --error: oklch(45% 0.1 25deg);
+}
+
+/* ── Restaurant site global styles ───────────────────────────────── */
+.pq-site {
+  background-color: var(--pq-bg);
+  color: var(--pq-text);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+.pq-site h1,
+.pq-site h2,
+.pq-site h3,
+.pq-site h4 {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+.pq-btn-primary {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background-color: #C9A84C;
+  color: #0D0704;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  transition: background-color 0.2s;
+}
+.pq-btn-primary:hover { background-color: #B8933D; }
+
+.pq-btn-outline {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border: 1px solid var(--pq-gold);
+  color: var(--pq-gold);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+.pq-btn-outline:hover {
+  background-color: var(--pq-gold);
+  color: var(--pq-bg);
+}
+
+.pq-gold { color: var(--pq-gold); }
+.pq-red  { color: var(--pq-red); }
+.pq-muted { color: var(--pq-muted); }
+.pq-section { padding: 5rem 0; }
+.pq-section-sm { padding: 3rem 0; }
+.pq-divider {
+  width: 3rem;
+  height: 2px;
+  background: var(--pq-gold);
+  margin: 1rem 0 1.5rem;
 }
 
 @theme inline {

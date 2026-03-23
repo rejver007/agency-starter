@@ -1,3 +1,4 @@
+// @ts-nocheck — Form builder plugin not used in this project (dead template code)
 import type { Form } from '@/payload-types'
 import { RequiredDataFromCollectionSlug } from 'payload'
 

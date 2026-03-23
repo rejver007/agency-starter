@@ -6,7 +6,7 @@ import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import { draftMode } from 'next/headers'
+import { draftMode, headers } from 'next/headers'
 import React, { cache } from 'react'
 import RichText from '@/components/RichText'
 
@@ -16,66 +16,87 @@ import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { ShareButtons } from '@/components/PostDetail/ShareButtons'
+import { GalleryGrid } from '@/components/PostDetail/GalleryGrid'
+import styles from '@/components/PostDetail/post.module.css'
 
 export async function generateStaticParams() {
   return []
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 type Args = {
-  params: Promise<{
-    slug?: string
-  }>
+  params: Promise<{ slug?: string }>
 }
 
 export default async function Post({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = '' } = await paramsPromise
-  // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
   const url = '/posts/' + decodedSlug
   const post = await queryPostBySlug({ slug: decodedSlug })
 
   if (!post) return <PayloadRedirects url={url} />
 
+  const headersList = await headers()
+  const host = headersList.get('host') ?? ''
+  const protocol = host.includes('localhost') ? 'http' : 'https'
+  const fullUrl = `${protocol}://${host}${url}`
+
+  const postAny = post as any
+  const tags: { tag: string }[] = postAny.tags ?? []
+  const gallery: { image: { url: string }; caption?: string }[] =
+    (postAny.gallery ?? []).filter((g: any) => g.image?.url)
+
   return (
-    <article className="pt-16 pb-16">
+    <article className={styles.article}>
       <PageClient />
-
-      {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
-
       {draft && <LivePreviewListener />}
 
       <PostHero post={post} />
 
-      <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
-          <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-              docs={post.relatedPosts.filter((post) => typeof post === 'object')}
-            />
-          )}
+      <div className={styles.inner}>
+        {/* Tags */}
+        {tags.length > 0 && (
+          <div className={styles.tags}>
+            <span className={styles.tagsLabel}>Tags</span>
+            {tags.map((t, i) => (
+              <span key={i} className={styles.tag}>{t.tag}</span>
+            ))}
+          </div>
+        )}
+
+        {/* Share buttons */}
+        <ShareButtons title={post.title} url={fullUrl} />
+
+        {/* Rich text content */}
+        <div className={styles.content}>
+          <RichText data={post.content} enableGutter={false} />
         </div>
+
+        {/* Photo gallery */}
+        {gallery.length > 0 && (
+          <div className={styles.gallerySection}>
+            <p className={styles.gallerySectionTitle}>Photo Gallery</p>
+            <GalleryGrid
+              images={gallery.map((g) => ({ url: g.image.url, caption: g.caption }))}
+            />
+          </div>
+        )}
+
+        {/* Share again at bottom */}
+        <div className={styles.divider} />
+        <ShareButtons title={post.title} url={fullUrl} />
+
+        {/* Related posts */}
+        {post.relatedPosts && post.relatedPosts.length > 0 && (
+          <div className={styles.relatedSection}>
+            <p className={styles.relatedTitle}>Related Articles</p>
+            <RelatedPosts
+              docs={post.relatedPosts.filter((p: any) => typeof p === 'object')}
+            />
+          </div>
+        )}
       </div>
     </article>
   )
@@ -83,16 +104,12 @@ export default async function Post({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
-  // Decode to support slugs with special characters
-  const decodedSlug = decodeURIComponent(slug)
-  const post = await queryPostBySlug({ slug: decodedSlug })
-
+  const post = await queryPostBySlug({ slug: decodeURIComponent(slug) })
   return generateMeta({ doc: post })
 }
 
 const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode()
-
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
@@ -101,11 +118,8 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
     limit: 1,
     overrideAccess: draft,
     pagination: false,
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
+    depth: 2,
+    where: { slug: { equals: slug } },
   })
 
   return result.docs?.[0] || null

@@ -1,0 +1,230 @@
+/* ── Posts Archive ────────────────────────────────────────────────────────────
+   UI/UX Pro Max · Dramatic Dark Luxury
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.page {
+  background: var(--pq-bg);
+  min-height: 100vh;
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────────────── */
+
+.hero {
+  position: relative;
+  height: 52vh;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse 100% 80% at 50% 30%, #200F06 0%, #0D0704 60%, #000 100%);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 0 1.5rem;
+}
+
+.heroEyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.heroLine {
+  height: 1px;
+  width: 3rem;
+  background: #C9A84C;
+}
+
+.heroEyebrowText {
+  color: #C9A84C;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.heroTitle {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 400;
+  color: #FFF8E7;
+  line-height: 1;
+  margin: 0 0 1rem;
+}
+
+.heroTitleItalic {
+  font-style: italic;
+  color: #C9A84C;
+}
+
+.heroSub {
+  color: rgba(255,248,231,0.5);
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+/* ── Grid Section ─────────────────────────────────────────────────────────── */
+
+.section {
+  padding: 5rem 0 7rem;
+}
+
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.empty {
+  text-align: center;
+  color: rgba(255,248,231,0.35);
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  padding: 4rem 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.75rem;
+}
+
+/* ── Card ─────────────────────────────────────────────────────────────────── */
+
+.card {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg, var(--pq-surface));
+  border: 1px solid rgba(201,168,76,0.12);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.32s cubic-bezier(0.2,0,0,1), box-shadow 0.32s ease;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #C9A84C;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.55), 0 0 24px var(--card-glow, rgba(201,168,76,0.2));
+}
+
+.card:hover::after {
+  transform: scaleX(1);
+}
+
+/* ── Card Image ───────────────────────────────────────────────────────────── */
+
+.cardImageWrap {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  background: var(--pq-surface2);
+  flex-shrink: 0;
+}
+
+.cardImage {
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card:hover .cardImage {
+  transform: scale(1.04);
+}
+
+.cardCategory {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  color: #C9A84C;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: rgba(13,7,4,0.7);
+  padding: 0.25rem 0.6rem;
+  border: 1px solid rgba(201,168,76,0.3);
+}
+
+/* ── Card Body ────────────────────────────────────────────────────────────── */
+
+.cardBody {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.cardDate {
+  color: rgba(201,168,76,0.7);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.cardTitle {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 1.2rem;
+  color: var(--pq-text);
+  margin: 0 0 0.75rem;
+  line-height: 1.35;
+}
+
+.cardExcerpt {
+  color: var(--pq-muted);
+  font-size: 0.85rem;
+  line-height: 1.65;
+  flex: 1;
+  margin: 0;
+}
+
+.cardReadMore {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #C9A84C;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 1.25rem;
+  transition: gap 0.2s ease;
+}
+
+.card:hover .cardReadMore {
+  gap: 0.7rem;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cardImageWrap {
+    height: 200px;
+  }
+}

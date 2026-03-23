@@ -1,0 +1,98 @@
+/* ── Post Hero ─────────────────────────────────────────────────────────────── */
+
+.hero {
+  position: relative;
+  min-height: 70vh;
+  display: flex;
+  align-items: flex-end;
+  margin-top: -10.4rem;
+  overflow: hidden;
+  background: radial-gradient(ellipse 100% 80% at 50% 30%, #200F06 0%, #0D0704 60%, #000 100%);
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(13,7,4,0.97) 0%,
+    rgba(13,7,4,0.65) 45%,
+    rgba(13,7,4,0.25) 100%
+  );
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 5rem 1.5rem 3.5rem;
+}
+
+.heroCategories {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.heroCategoryPill {
+  color: #C9A84C;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  border: 1px solid rgba(201,168,76,0.4);
+  padding: 0.25rem 0.7rem;
+}
+
+.heroTitle {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 400;
+  color: #FFF8E7;
+  line-height: 1.15;
+  margin: 0 0 1.5rem;
+}
+
+.heroMeta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.heroMetaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.heroMetaLabel {
+  color: rgba(255,248,231,0.4);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.heroMetaValue {
+  color: rgba(255,248,231,0.85);
+  font-size: 0.9rem;
+}
+
+.heroMetaDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.5);
+  align-self: flex-end;
+  margin-bottom: 0.4rem;
+}

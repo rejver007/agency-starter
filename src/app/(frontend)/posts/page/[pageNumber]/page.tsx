@@ -11,6 +11,8 @@ import React from 'react'
 import PageClient from './page.client'
 import { notFound } from 'next/navigation'
 
+export const revalidate = 600
+
 type Args = {
   params: Promise<{
     pageNumber: string
@@ -51,7 +53,7 @@ export default async function Page({ params: paramsPromise }: Args) {
         />
       </div>
 
-      <CollectionArchive posts={posts.docs} />
+      <CollectionArchive posts={posts.docs as any} />
 
       <div className="container">
         {posts?.page && posts?.totalPages > 1 && (

@@ -1,7 +1,5 @@
 import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
 
-import { contactForm as contactFormData } from './contact-form'
-import { contact as contactPageData } from './contact-page'
 import { home } from './home'
 import { image1 } from './image-1'
 import { image2 } from './image-2'
@@ -15,14 +13,11 @@ const collections: CollectionSlug[] = [
   'media',
   'pages',
   'posts',
-  'forms',
-  'form-submissions',
-  'search',
 ]
 
 const globals: GlobalSlug[] = ['header', 'footer']
 
-const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
+const newsCategories = ['News', 'Updates', 'Events', 'Resources', 'Case Studies', 'Tutorials']
 
 // Next.js revalidation errors are normal when seeding the database without a server running
 // i.e. running `yarn seed` locally instead of using the admin UI within an active app
@@ -48,9 +43,8 @@ export const seed = async ({
     globals.map((global) =>
       payload.updateGlobal({
         slug: global,
-        data: {
-          navItems: [],
-        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        data: { navItems: [], ctaLabel: null, ctaUrl: null } as any,
         depth: 0,
         context: {
           disableRevalidate: true,
@@ -127,12 +121,12 @@ export const seed = async ({
       data: imageHero1,
       file: hero1Buffer,
     }),
-    categories.map((category) =>
+    newsCategories.map((category) =>
       payload.create({
         collection: 'categories',
         data: {
           title: category,
-          slug: category,
+          slug: category.toLowerCase().replace(/\s+/g, '-'),
         },
       }),
     ),
@@ -192,28 +186,13 @@ export const seed = async ({
     },
   })
 
-  payload.logger.info(`— Seeding contact form...`)
-
-  const contactForm = await payload.create({
-    collection: 'forms',
-    depth: 0,
-    data: contactFormData,
-  })
-
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage] = await Promise.all([
-    payload.create({
-      collection: 'pages',
-      depth: 0,
-      data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }),
-    }),
-    payload.create({
-      collection: 'pages',
-      depth: 0,
-      data: contactPageData({ contactForm: contactForm }),
-    }),
-  ])
+  await payload.create({
+    collection: 'pages',
+    depth: 0,
+    data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }),
+  })
 
   payload.logger.info(`— Seeding globals...`)
 
@@ -222,56 +201,22 @@ export const seed = async ({
       slug: 'header',
       data: {
         navItems: [
-          {
-            link: {
-              type: 'custom',
-              label: 'Posts',
-              url: '/posts',
-            },
-          },
-          {
-            link: {
-              type: 'reference',
-              label: 'Contact',
-              reference: {
-                relationTo: 'pages',
-                value: contactPage.id,
-              },
-            },
-          },
+          { label: 'Home', url: '/' },
+          { label: 'Blog', url: '/posts' },
         ],
+        ctaLabel: 'Get in touch',
+        ctaUrl: '/contact',
       },
-    }),
+    } as any),
     payload.updateGlobal({
       slug: 'footer',
       data: {
         navItems: [
-          {
-            link: {
-              type: 'custom',
-              label: 'Admin',
-              url: '/admin',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Source Code',
-              newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/',
-            },
-          },
+          { label: 'Home', url: '/' },
+          { label: 'Blog', url: '/posts' },
         ],
       },
-    }),
+    } as any),
   ])
 
   payload.logger.info('Seeded database successfully!')

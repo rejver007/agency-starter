@@ -1,10 +1,9 @@
 import type { GlobalConfig } from 'payload'
-
-import { link } from '@/fields/link'
 import { revalidateFooter } from './hooks/revalidateFooter'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
+  label: 'Footer',
   access: {
     read: () => true,
   },
@@ -12,18 +11,24 @@ export const Footer: GlobalConfig = {
     {
       name: 'navItems',
       type: 'array',
+      label: 'Footer Navigation Links',
+      maxRows: 8,
       fields: [
-        link({
-          appearances: false,
-        }),
-      ],
-      maxRows: 6,
-      admin: {
-        initCollapsed: true,
-        components: {
-          RowLabel: '@/Footer/RowLabel#RowLabel',
+        {
+          name: 'label',
+          type: 'text',
+          required: true,
         },
-      },
+        {
+          name: 'url',
+          type: 'text',
+          required: true,
+        },
+      ],
+      defaultValue: [
+        { label: 'Home', url: '/' },
+        { label: 'Blog', url: '/posts' },
+      ],
     },
   ],
   hooks: {
